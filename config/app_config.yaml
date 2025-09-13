@@ -1,0 +1,78 @@
+# Logging Configuration
+logging:
+  version: 1
+  formatters:
+    simpleFormatter:
+      format: "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
+      datefmt: "%Y-%m-%d %H:%M:%S"
+  handlers:
+    consoleHandler:
+      class: logging.StreamHandler
+      formatter: simpleFormatter
+      stream: ext://sys.stdout
+    fileHandler:
+      class: logging.handlers.TimedRotatingFileHandler
+      formatter: simpleFormatter
+      filename: logs/main_system_logs.log
+      when: "midnight" # Rotate the log file every midnight
+      interval: 1 # Interval is 1 day
+      backupCount: 30 # Optional: Set this to keep 30 days of logs, older logs are deleted.
+  root:
+    level: INFO
+    handlers: [fileHandler]
+
+# AWS Configuration
+aws:
+  region: !Parse ["os.environ.get('AWS_REGION')"]
+  # DynamoDB
+  dynamodb:
+    call_records_table: !Parse ["os.environ.get('CALL_RECORDS_TABLE')"]
+    service_account_records_table:
+      !Parse ["os.environ.get('SERVICE_ACCOUNT_RECORDS_TABLE')"]
+  # Lambda
+  lambda:
+    call_termination_lambda: !Parse ["os.environ.get('CALL_TERMINATION_LAMBDA')"]
+
+# Azure Configuration
+azure:
+  api_version: !Parse ["os.environ.get('AZURE_API_VERSION')"]
+  api_key: !Parse ["os.environ.get('AZURE_ACCESS_KEY')"]
+  api_base: !Parse ["os.environ.get('AZURE_API_BASE')"]
+  openai:
+    model_id: !Parse ["os.environ.get('AZURE_MODEL_ID')"]
+    max_tokens: 3000
+    temperature: 0.6
+
+# Twilio Configuration
+twilio:
+  account_sid: !Parse ["os.environ.get('TWILIO_ACCOUNT_SID')"]
+  auth_token: !Parse ["os.environ.get('TWILIO_AUTH_TOKEN')"]
+
+# Ultravox Configuration
+ultravox:
+  api_key: !Parse ["os.environ.get('ULTROVOX_API_KEY')"]
+  base_url: !Parse ["os.environ.get('ULTROVOX_BASE_URL')"]
+  to_do_list_agent_id: !Parse ["os.environ.get('ULTROVOX_TO_DO_LIST_AGENT_ID')"]
+  journaling_agent_id: !Parse ["os.environ.get('ULTROVOX_JOURNALING_AGENT_ID')"]
+
+# JWT Configuration
+jwt_authentication:
+  algorithm: !Parse ["os.environ.get('JWT_AUTHENTICATION_ALGORITHM')"]
+  access_token_expire_minutes:
+    !Parse ["os.environ.get('JWT_AUTHENTICATION_ACCESS_TOKEN_EXPIRE_MINUTES')"]
+  service_acc_and_call_id_private_key_path:
+    !Parse [
+      "os.environ.get('JWT_AUTHENTICATION_PRIVATE_KEY_SERV_ACC_CALL_ID_PATH')",
+    ]
+  service_acc_and_call_id_public_key_path:
+    !Parse [
+      "os.environ.get('JWT_AUTHENTICATION_PUBLIC_KEY_SERV_ACC_CALL_ID_PATH')",
+    ]
+
+# Encryption Configuration
+encryption:
+  key: !Parse ["os.environ.get('ENCRYPTION_KEY')"]
+decryption:
+  password_placeholder:
+    !Parse ["os.environ.get('DECRYPTION_PASSWORD_PLACEHOLDER')"]
+  salt_placeholder: !Parse ["os.environ.get('DECRYPTION_SALT_PLACEHOLDER')"]
