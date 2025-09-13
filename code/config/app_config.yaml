@@ -1,0 +1,36 @@
+# AWS Configuration
+aws:
+  region: !Parse ["os.environ.get('AWS_REGION')"]
+  # DynamoDB
+  dynamodb:
+    call_records_table: !Parse ["os.environ.get('CALL_RECORDS_TABLE')"]
+
+# Azure Configuration
+azure:
+  api_version: !Parse ["os.environ.get('AZURE_API_VERSION')"]
+  api_key: !Parse ["os.environ.get('AZURE_ACCESS_KEY')"]
+  api_base: !Parse ["os.environ.get('AZURE_API_BASE')"]
+  openai:
+    model_id: !Parse ["os.environ.get('AZURE_MODEL_ID')"]
+    max_tokens: 3000
+    temperature: 0.6
+
+# Twilio Configuration
+twilio:
+  account_sid: !Parse ["os.environ.get('TWILIO_ACCOUNT_SID')"]
+  auth_token: !Parse ["os.environ.get('TWILIO_AUTH_TOKEN')"]
+
+# Ultravox Configuration
+ultravox:
+  api_key: !Parse ["os.environ.get('ULTROVOX_API_KEY')"]
+  base_url: !Parse ["os.environ.get('ULTROVOX_BASE_URL')"]
+
+# Notion Configuration
+notion:
+  token: !Parse ["os.environ.get('NOTION_API_TOKEN')"]
+  journal_page_id: !Parse ["os.environ.get('NOTION_JOURNAL_PAGE_ID')"]
+  todo_page_id: !Parse ["os.environ.get('NOTION_TODO_PAGE_ID')"]
+
+prompts:
+  todo_page: "What tasks do you need to complete? make it in a json format. Return in this format: {'tasks': [task1, task2, ...]}"
+  journal_page: "What happened today?make it in json value with the format {'day': 'a desciptive para about my day written in a way as if I was writing'}"
