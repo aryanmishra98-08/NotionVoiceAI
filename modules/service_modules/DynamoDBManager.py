@@ -1,4 +1,4 @@
-from setup_loader_app import logger
+from setup_loader import logger
 import boto3
 from botocore.exceptions import ClientError
 

@@ -1,4 +1,4 @@
-from setup_loader_app import config_data, logger
+from setup_loader import config_data, logger
 import requests
 
 

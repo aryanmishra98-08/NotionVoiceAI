@@ -21,6 +21,10 @@ logging:
     level: INFO
     handlers: [fileHandler]
 
+# App Url
+app:
+  url: !Parse ["os.environ.get('VOICE_AI_APP_URL')"]
+
 # AWS Configuration
 aws:
   region: !Parse ["os.environ.get('AWS_REGION')"]
@@ -42,11 +46,6 @@ azure:
     model_id: !Parse ["os.environ.get('AZURE_MODEL_ID')"]
     max_tokens: 3000
     temperature: 0.6
-
-# Twilio Configuration
-twilio:
-  account_sid: !Parse ["os.environ.get('TWILIO_ACCOUNT_SID')"]
-  auth_token: !Parse ["os.environ.get('TWILIO_AUTH_TOKEN')"]
 
 # Ultravox Configuration
 ultravox:

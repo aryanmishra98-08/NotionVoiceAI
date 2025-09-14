@@ -1,4 +1,4 @@
-from setup_loader_app import logger
+from setup_loader import logger
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import JSONResponse
 from slowapi import Limiter

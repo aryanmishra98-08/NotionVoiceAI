@@ -1,4 +1,4 @@
-from setup_loader_app import logger
+from setup_loader import logger
 import bleach
 from typing import Any, Literal
 from pydantic import BaseModel, Field, model_validator, ConfigDict, field_validator, ValidationInfo, SecretStr
