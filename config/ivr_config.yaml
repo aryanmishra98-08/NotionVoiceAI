@@ -21,10 +21,17 @@ logging:
     level: INFO
     handlers: [fileHandler]
 
+# App Url
+app:
+  url: !Parse ["os.environ.get('CCAAS_APP_INBOUND_URL')"]
+
 # Voice AI App Credentials
 voice_ai_app:
+  voice_ai_app_url: !Parse ["os.environ.get('VOICE_AI_APP_URL')"]
   username: !Parse ["os.environ.get('CCAAS_USERNAME')"]
   password: !Parse ["os.environ.get('CCAAS_PASSWORD')"]
+  timeout_connect: 10
+  timeout_read: 30
 
 # Twilio Configuration
 twilio:
