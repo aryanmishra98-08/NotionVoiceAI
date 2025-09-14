@@ -34,4 +34,4 @@ twilio:
   from_number: !Parse ["os.environ.get('TWILIO_FROM_NUMBER')"]
 
 voices:
-  internal_error_voice_play_url: https://{twilio function url}/assets/Internal_Error_occured.mp3
+  internal_error_voice_play_url: !Parse ["os.environ.get('TWILIO_ERROR_VOICE_URL')"]
