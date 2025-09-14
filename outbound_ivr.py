@@ -5,7 +5,7 @@ This module sets up routes and middleware for handling incoming calls,
 validating Twilio requests, obtaining JWT tokens from an internal Voice AI service,
 and connecting calls via streaming.
 """
-from setup_loader_ivr import config_data, logger
+from setup_loader import config_data, logger
 import os
 import httpx
 import asyncio
@@ -23,19 +23,17 @@ from twilio.twiml.voice_response import Connect, Play, VoiceResponse
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # --- Configuration ---
+app_url = config_data['app']['url']
+voice_ai_app_url = config_data['voice_ai_app']['voice_ai_app_url']
 voice_ai_username = config_data['voice_ai_app']['username']
 voice_ai_password = config_data['voice_ai_app']['password']
+voice_ai_timeout_connect = config_data['voice_ai_app']['timeout_connect']
+voice_ai_timeout_read = config_data['voice_ai_app']['timeout_read']
+account_sid = config_data['twilio']['account_sid']
 to_number = config_data['twilio']['to_number']
 from_number = config_data['twilio']['from_number']
-account_sid = config_data['twilio']['account_sid']
 auth_token = config_data['twilio']['auth_token']
 internal_error_voice_play_url = config_data['voices']['internal_error_voice_play_url']
-voice_ai_timeout_connect = config_data['voice_ai_app'].get(
-    'timeout_connect', 10.0)
-voice_ai_timeout_read = config_data['voice_ai_app'].get('timeout_read', 30.0)
-
-app_url = os.environ.get('CCAAS_APP_OUTBOUND_URL')
-voice_ai_app_url = os.environ.get('VOICE_AI_APP_URL')
 
 # CORS origins (default to no origins if not set)
 origins = app_url if isinstance(app_url, list) else (
@@ -44,10 +42,10 @@ origins = app_url if isinstance(app_url, list) else (
 # Initialize FastAPI
 app = FastAPI(
     title="Outbound-IVR",
-    # docs_url=None,
-    # redoc_url=None,
-    # openapi_url=None,
-    # redirect_slashes=False,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+    redirect_slashes=False,
 )
 
 # Twilio request validator
@@ -87,36 +85,36 @@ async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
 
     # Remove any existing Server header, then set our own
-    # response.headers.pop("server", None)
-    # response.headers.pop("Server", None)
-    # response.headers.setdefault("Server", "Hidden")
+    response.headers.pop("server", None)
+    response.headers.pop("Server", None)
+    response.headers.setdefault("Server", "Hidden")
 
-    # # Security headers
-    # response.headers.setdefault("X-Content-Type-Options", "nosniff")
-    # response.headers.setdefault(
-    #     "Content-Security-Policy",
-    #     "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-    #     "font-src 'self' https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'self'; "
-    #     "object-src 'none';",
-    # )
-    # response.headers.setdefault(
-    #     "Strict-Transport-Security",
-    #     "max-age=31536000; includeSubDomains;"
-    # )
-    # response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
-    # response.headers.setdefault(
-    #     "Referrer-Policy", "no-referrer-when-downgrade")
-    # response.headers.setdefault(
-    #     "Permissions-Policy",
-    #     "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), "
-    #     "display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(), geolocation=(), "
-    #     "gyroscope=(), magnetometer=(), microphone=*, midi=(), payment=(), picture-in-picture=(), "
-    #     "publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
-    # )
-    # response.headers.setdefault("X-XSS-Protection", "1; mode=block")
-    # response.headers.setdefault("Cache-Control", "must-revalidate")
-    # response.headers.setdefault("Pragma", "no-cache")
-    # response.headers.setdefault("Expires", "0")
+    # Security headers
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault(
+        "Content-Security-Policy",
+        "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'self'; "
+        "object-src 'none';",
+    )
+    response.headers.setdefault(
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains;"
+    )
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault(
+        "Referrer-Policy", "no-referrer-when-downgrade")
+    response.headers.setdefault(
+        "Permissions-Policy",
+        "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), "
+        "display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(), geolocation=(), "
+        "gyroscope=(), magnetometer=(), microphone=*, midi=(), payment=(), picture-in-picture=(), "
+        "publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
+    )
+    response.headers.setdefault("X-XSS-Protection", "1; mode=block")
+    response.headers.setdefault("Cache-Control", "must-revalidate")
+    response.headers.setdefault("Pragma", "no-cache")
+    response.headers.setdefault("Expires", "0")
     return response
 
 # CORS
