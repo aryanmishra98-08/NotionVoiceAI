@@ -13,12 +13,8 @@ def init_logs_folder(folder_name="logs"):
     Ensures that a logs folder exists at the project root level.
     Returns the full path of the logs folder.
     """
-    # Get script directory
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    # Navigate up to the project root (from 'services/inbound_call/' to project root)
-    project_root = os.path.abspath(os.path.join(script_directory, "../../"))
-    # Create logs directory at project root
-    logs_directory = os.path.join(project_root, folder_name)
+    current_directory = os.getcwd()
+    logs_directory = os.path.join(current_directory, folder_name)
     if not os.path.isdir(logs_directory):
         try:
             os.makedirs(logs_directory)
