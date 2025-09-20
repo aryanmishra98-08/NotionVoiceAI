@@ -82,9 +82,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):  # type: ignore
         return response
 
 
-app.add_middleware(LoggingMiddleware)
-
-
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -130,6 +127,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Logging
+app.add_middleware(LoggingMiddleware)
+
 
 # --- API Routes Registration ---
 app.include_router(AuthHandlingRoutes.router, prefix="/api")
