@@ -1,22 +1,57 @@
-# Notion Voice CoPilot
+# Notion Voice CoPilot – Agents Config
 
-Notion Voice CoPilot is a personal project born out of my preference for speaking rather than typing. I’ve always felt that voice messages carry more authenticity and realism compared to plain text.
+This branch introduces **Voice AI Agents** built for personal productivity and reflection inside the Notion Voice CoPilot framework. Each agent runs as a conversational service optimized for natural, friendly, and low-friction interactions.
 
-I wanted a way to **journal and manage my to-do lists using voice**, instead of writing or typing everything out. But I didn’t want it to stop at being just another voice memo tool—I wanted it to be **interactive**, something that feels like having a conversation with a companion.
+## Agents in This Branch
 
-That’s how Notion Voice CoPilot was created.
+### 1. Journaling Companion – *Juno*
 
-### Core Idea
+A warm, casual “friend” who helps you reflect on your day through short voice conversations.
 
-- **On-demand voice calls**: Call anytime to add, update, or manage tasks with your voice.
-- **Daily journaling routine**: At 10 PM every night, the system automatically calls you to guide a journaling session—helping you wind down and reflect before sleep.
+### 2. To-Do Assistant – *Jot*
 
-### What This Project Showcases
-
-- Voice-first interaction for task management.
-- Seamless journaling experience without typing.
-- A different perspective on how we can interact with productivity tools—like talking to a co-pilot instead of writing notes alone.
+A quick and helpful personal assistant for managing to-do lists by voice.
 
 ---
 
-## ✨ Hope you enjoy exploring this project as much as I enjoyed building it!
+## Directory Structure
+
+```
+Agents/
+├── Journaling Companion.json    # Agent definition for Juno
+├── Journaling Companion.md      # Prompt for Juno
+├── To-Do Assistant.json         # Agent definition for Jot
+├── To-Do Assistant.md           # Prompt for Jot
+```
+
+---
+
+## Setup
+
+### Create Agents in Ultravox (Console)
+
+Follow these steps once per agent (first Juno, then Jot):
+
+1. **Open Ultravox Console → Agents** (Dashboard → *Agents*).
+2. **New Agent** → click **New Agent**.
+3. **Name & System Prompt**
+
+   * **Name:** Use the agent’s name (`Juno` or `Jot`).
+   * **System Prompt:** Paste from the corresponding JSON’s `systemPrompt`.
+
+4. **Voice & Other Configurations**
+
+   * Pick a voice.
+   * Use the JSON files to fill in other values (e.g., join timeout, VAD settings).
+5. **Test** → Click **Test Agent** to start/stop a call.
+
+
+**Reference link:** [Agent Quickstart – Ultravox Docs][1]
+
+---
+
+## Running the Agents
+
+Use the created **Agent IDs** in your Voice App configuration. These IDs connect the Notion Voice CoPilot service to the Ultravox agents you’ve set up.
+
+[1]: https://docs.ultravox.ai/gettingstarted/quickstart/agent-console "Agent Quickstart - Ultravox Docs"
