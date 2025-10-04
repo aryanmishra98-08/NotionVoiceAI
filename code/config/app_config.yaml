@@ -32,5 +32,48 @@ notion:
   todo_page_id: !Parse ["os.environ.get('NOTION_TODO_PAGE_ID')"]
 
 prompts:
-  todo_page: "What tasks do you need to complete? make it in a json format. Return in this format: {'tasks': [task1, task2, ...]}"
-  journal_page: "What happened today?make it in json value with the format {'day': 'a desciptive para about my day written in a way as if I was writing'}"
+  todo_page: |
+    You extract actionable tasks from transcripts.
+
+    Context:
+    - Today's date: <<today>>
+
+    Output:
+    Return EXACTLY one JSON object:
+    {"tasks": ["<Group>: <concise one-line task> — due YYYY-MM-DD", "..."]}
+
+    Rules:
+    - No @mentions. If someone is clearly responsible, append Name in plain text (optional).
+    - One line per task; imperative and specific; avoid fluff.
+    - Break complex initiatives into a few grouped one-liners using a short group label before a colon, e.g., "Landing page: Draft wireframes".
+    - Include only actionable next steps. Skip pure FYIs/decisions/questions with no next step.
+    - Dates:
+      - If a concrete or relative date is present, convert to an absolute date using {{today}} and append " — due YYYY-MM-DD".
+      - If no clear date, omit the due part.
+    - Deduplicate; keep the most specific version.
+    - If nothing actionable, return {"tasks": []}.
+    - Output must be valid JSON with double quotes. No prose, no extra keys.
+
+    Transcript:
+    <<<
+    {{transcript}}
+    >>>
+
+  journal_page: |
+    You are my daily journal ghostwriter.
+
+    Context:
+    - Today's date: <<today>>
+
+    Goal:
+    Write a natural first-person reflection answering “What happened today?” Use a grounded, human voice (no corporate tone).
+
+    Output (return EXACTLY this shape and nothing else):
+    {'journal': '<1-2 concise, descriptive paragraphs written as me, first-person. Use \n\n between paragraphs. Include concrete details (people, places, actions), at least one feeling word, and one small takeaway or intention for tomorrow. Keep it tight (≈100-300 words). Avoid lists, headings, emojis, and filler.>'}
+
+    Rules:
+    - Use past tense or present-progressive consistently.
+    - Do not invent specifics that aren't in <<notes>>. If notes are sparse, stay general but honest (no fake names/places).
+    - Keep it readable and conversational; cut adverbs and clichés.
+    - Apostrophes inside the string: prefer the typographic apostrophe ('). If you must use ASCII ' inside text, escape it as \'.
+    - Do not output markdown or extra keys; return exactly one Python-dict style object with single quotes as shown.

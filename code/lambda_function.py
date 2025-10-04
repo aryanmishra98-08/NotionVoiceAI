@@ -3,6 +3,7 @@ from modules.DynamoDBManager import DynamoDBManager
 from modules.NotionManager import NotionManager
 from modules.UltravoxAIManager import UltravoxAIManager
 from modules.AIManager import AzureAIManager
+from datetime import datetime
 import json
 
 
@@ -51,11 +52,17 @@ def process_call(ccaas_call_id, call_type):
 
         formatted_transcript = transcript['output']
 
+        # Get current date and time
+        today = datetime.now()
+        # Format: Monday, 04 October 2025
+        formatted_date = today.strftime("%A, %d %B %Y")
+
         # Further processing of formatted transcript based on call type
         if call_type == "to-do-list":
+            prompt = config_data['prompts']['todo_page'].replace("<<today>>", formatted_date)
             azure_response = azure_ai_manager.prompt_execution(
                 prompt=formatted_transcript,
-                system_prompt=config_data['prompts']['todo_page']
+                system_prompt=prompt
             )
             if not azure_response['status']:
                 logger.warning(f"Failed to process to-do prompt: {azure_response['error']}")
@@ -86,9 +93,10 @@ def process_call(ccaas_call_id, call_type):
             }
 
         else:
+            prompt = config_data['prompts']['journal_page'].replace("<<today>>", formatted_date)
             azure_response = azure_ai_manager.prompt_execution(
                 prompt=formatted_transcript,
-                system_prompt=config_data['prompts']['journal_page']
+                system_prompt=prompt
             )
             if not azure_response['status']:
                 logger.warning(f"Failed to process journal prompt: {azure_response['error']}")
@@ -99,7 +107,7 @@ def process_call(ccaas_call_id, call_type):
                     "error": azure_response['error']
                 }
             logger.info("Azure Response: %s", azure_response)
-            notion_template = str(azure_response['output']['day'])
+            notion_template = str(azure_response['output']['journal'])
 
             notion_response = notion_manager.create_journal_entry(notion_template)
             if not notion_response['status']:

@@ -55,8 +55,6 @@ class NotionManager:
             ]
         }
 
-    # ---------- Public Methods ----------
-
     def create_journal_entry(self, content):
         """
         Create a dated journal entry under the configured journal parent page.
