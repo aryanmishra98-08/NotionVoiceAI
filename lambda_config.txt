@@ -1,0 +1,8 @@
+Description: 
+Processes and syncs voice-based user interactions into Notion workspaces.
+Integrates with Ultravox AI, Azure OpenAI, Twilio, and DynamoDB to update Notion pages dynamically based on conversation context.
+
+Memory: 256 MB
+Ephemeral Storage: 512 MB
+Timeout: 60 seconds
+Runtime: Python 3.11
