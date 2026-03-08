@@ -27,7 +27,7 @@ def init_logs_folder(folder_name="logs"):
 logs_dir = init_logs_folder()
 
 
-class YamalParser(yaml.YAMLObject):
+class YAMLParser(yaml.YAMLObject):
     yaml_loader = yaml.SafeLoader
     yaml_tag = '!Parse'
 
@@ -50,8 +50,8 @@ class YamalParser(yaml.YAMLObject):
 
 
 # Register the custom YAML parser so that PyYAML uses it when it encounters the !Parse tag
-yaml.add_constructor(YamalParser.yaml_tag,
-                     YamalParser.from_yaml, Loader=YamalParser.yaml_loader)
+yaml.add_constructor(YAMLParser.yaml_tag,
+                     YAMLParser.from_yaml, Loader=YAMLParser.yaml_loader)
 
 
 def load_config(config_path="config/app_config.yaml"):

@@ -23,7 +23,7 @@ class UltravoxAIManager:
         Create a call in Ultravox using the provided payload.
 
         Args:
-            agent_id (str): The ID of the agent to create the call form.
+            agent_id (str): The ID of the agent to create the call for.
             payload (dict): The payload to send in the API request.
 
         Returns:
