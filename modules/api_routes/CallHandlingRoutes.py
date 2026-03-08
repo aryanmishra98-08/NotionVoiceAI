@@ -6,7 +6,7 @@ from slowapi.util import get_remote_address
 from modules.service_modules.JWTAuthentication import JWTBearerWithServiceAccAndCallID
 from modules.api_routes.APIResponse import APIResponse
 from modules.api_routes.APISchemaComponent import CallRequest
-from modules.api_modules.CallHandelingComponent import *
+from modules.api_modules.CallHandlingComponent import *
 
 # Initialize the API router
 router = APIRouter()
