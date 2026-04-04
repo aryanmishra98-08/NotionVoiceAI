@@ -5,4 +5,4 @@ Integrates with Ultravox AI, Azure OpenAI, Twilio, and DynamoDB to update Notion
 Memory: 256 MB
 Ephemeral Storage: 512 MB
 Timeout: 60 seconds
-Runtime: Python 3.11
+Runtime: Python 3.12

@@ -1,6 +1,6 @@
 # AWS Configuration
 aws:
-  region: !Parse ["os.environ.get('AWS_REGION')"]
+  region: !Parse ["os.environ.get('AWS_REGION_NAME')"]
   # DynamoDB
   dynamodb:
     call_records_table: !Parse ["os.environ.get('CALL_RECORDS_TABLE')"]
